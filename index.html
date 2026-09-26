@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="ceses.css">
+    <title>Моя страница</title>
+</head>
+<body>
+    <div class="bg-text" id="bgText"></div>
+
+    <div class="content">
+        <h1>перевет!!!</h1>
+        <p>это мой вебстраница чтобы понять меня лучшеее всээх</p>
+        <p>смотрите я уметь срать хорошо, люибть порисовашки</p>
+        <p>раньше заниматься вирус комьюнитейшн!!!</p>
+        <p>привет</p>
+        <p>ладно я продолжат</p>
+        <p>из интерес у меня тока что крутые вещички компьюетртт</p>
+        <p>любоф к тикитокам тик так время полночь</p>
+        <p>учусь в шкоде</p>
+        <p>я Программист От сЛОФ ХУда ф</p>
+        <p>сайт делат делат скора рука а потом бац и хостить хостить гитхаб</p>
+        <p>страшные страницы элемента меня пугать</p>
+
+        <button id="enterBtn">Войти</button>
+    </div>
+
+    <script>
+        // Фоновый мигающий текст
+        const text = "перевет!!! ";
+        const bg = document.getElementById("bgText");
+        let html = "";
+        for (let i = 0; i < 300; i++) {
+            const delay = (Math.random() * 2).toFixed(2);
+            html += `<span style="animation-delay:${delay}s">${text}</span>`;
+        }
+        bg.innerHTML = html;
+
+        // HTML-содержимое окна "ты попался!"
+        const popupHTML = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>ты попался!</title>
+                <style>
+                    html, body {
+                        margin: 0;
+                        padding: 0;
+                        height: 100%;
+                        background: black;
+                        overflow: hidden;
+                    }
+                    body {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: red;
+                        font-family: Arial, sans-serif;
+                        font-size: 48px;
+                        font-weight: bold;
+                        text-align: center;
+                        user-select: none;
+                    }
+                </style>
+            </head>
+            <body>ты попался!</body>
+            </html>
+        `;
+
+        // Хранилище открытых окон
+        const openedWindows = [];
+
+        // Функция запуска прыжков
+        function startJumping(w) {
+            let dx = (Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 12);
+            let dy = (Math.random() < 0.5 ? -1 : 1) * (8 + Math.random() * 12);
+
+            const timer = setInterval(() => {
+                if (!w || w.closed) {
+                    clearInterval(timer);
+                    return;
+                }
+                try {
+                    const maxX = Math.max(0, screen.availWidth - (w.outerWidth || 400));
+                    const maxY = Math.max(0, screen.availHeight - (w.outerHeight || 300));
+
+                    let x = (w.screenX || 0) + dx;
+                    let y = (w.screenY || 0) + dy;
+
+                    if (x <= 0 || x >= maxX) {
+                        dx = -dx;
+                        x = Math.max(0, Math.min(maxX, x));
+                    }
+                    if (y <= 0 || y >= maxY) {
+                        dy = -dy;
+                        y = Math.max(0, Math.min(maxY, y));
+                    }
+
+                    w.moveTo(Math.round(x), Math.round(y));
+                } catch (e) {}
+            }, 40);
+
+            return timer;
+        }
+
+        // Функция создания одного окна
+        function createPopup() {
+            const w = window.open("", "_blank", "width=400,height=300");
+            if (!w) return null;
+
+            try {
+                w.document.open();
+                w.document.write(popupHTML);
+                w.document.close();
+            } catch (e) {
+                // Если браузер не дал записать — просто игнорируем
+            }
+
+            openedWindows.push(w);
+            setTimeout(() => startJumping(w), 100);
+            return w;
+        }
+
+        // Кнопка "Войти"
+        document.getElementById("enterBtn").addEventListener("click", function () {
+            // Открываем 3 окна сразу
+            for (let i = 0; i < 3; i++) {
+                createPopup();
+            }
+
+            // Каждые 5 секунд — новое окно
+            setInterval(() => {
+                createPopup();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
